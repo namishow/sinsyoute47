@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日本史探究 小テスト：明治初期の外交</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+            background: linear-gradient(135deg, #064e3b 0%, #0f766e 50%, #134e4a 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+    </style>
+</head>
+<body class="text-gray-800 flex flex-col justify-between min-h-screen p-3 md:p-6">
+
+    <!-- Header -->
+    <header class="max-w-3xl mx-auto w-full text-center my-3">
+        <div class="inline-flex items-center gap-1.5 bg-emerald-400 text-emerald-950 text-xs font-extrabold px-3 py-1 rounded-full mb-2 shadow">
+            <i class="fa-solid fa-graduation-cap"></i> 高校日本史探究 プリントNo.47 完全網羅
+        </div>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-wide shadow-text flex items-center justify-center gap-2">
+            <span>明治初期の外交マスター</span>
+        </h1>
+        <p class="text-emerald-100 text-xs md:text-sm mt-1">爆速解答で琉球処分・国境確定・日清日朝条約を完全攻略！</p>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-2xl mx-auto w-full flex-grow flex items-center justify-center">
+
+        <!-- START SCREEN -->
+        <div id="start-screen" class="glass-card rounded-3xl p-6 md:p-8 shadow-2xl w-full text-center transition-all duration-300">
+            <div class="text-5xl text-emerald-600 mb-3">
+                <i class="fa-solid fa-compass-drafting"></i>
+            </div>
+            <h2 class="text-2xl font-black text-gray-800 mb-2">日本史一問一答クイズ</h2>
+            <p class="text-gray-600 text-xs md:text-sm mb-5 leading-relaxed">
+                全16問の4択形式問題です。<br>
+                琉球処分、北海道開拓、樺太・千島交換条約、征韓論・明治六年の政変、江華島事件、日朝・日清修好条規、台湾出兵まで完璧カバー！
+            </p>
+
+            <div class="bg-emerald-50/80 rounded-2xl p-4 mb-6 text-left border border-emerald-100">
+                <h3 class="font-bold text-emerald-900 text-xs md:text-sm mb-2 flex items-center gap-1.5">
+                    <i class="fa-solid fa-star text-amber-500"></i> このクイズの特徴
+                </h3>
+                <ul class="text-xs text-emerald-800 space-y-1.5">
+                    <li><i class="fa-solid fa-check text-green-500 mr-1"></i> 正解・不正解の効果音（BGM/SE）付き</li>
+                    <li><i class="fa-solid fa-check text-green-500 mr-1"></i> 選択肢の答えの番号は完全均等（1~4各4問ずつ）</li>
+                    <li><i class="fa-solid fa-check text-green-500 mr-1"></i> 明治初期外交の重要ポイント暗記モーダル搭載</li>
+                </ul>
+            </div>
+
+            <button onclick="startQuiz()" class="pulse-animation w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-lg py-3.5 px-8 rounded-2xl shadow-lg hover:shadow-emerald-500/50 transition-all flex items-center justify-center gap-2">
+                <i class="fa-solid fa-play"></i> テストを開始する！
+            </button>
+        </div>
+
+        <!-- QUIZ SCREEN -->
+        <div id="quiz-screen" class="glass-card rounded-3xl p-5 md:p-7 shadow-2xl w-full hidden transition-all duration-300">
+            <!-- Progress & Stats -->
+            <div class="flex justify-between items-center mb-3 pb-3 border-b border-gray-200">
+                <div class="flex items-center gap-2">
+                    <span id="question-number" class="bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full">Q.1 / 16</span>
+                    <span id="combo-badge" class="hidden bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded-full animate-bounce">
+                        <i class="fa-solid fa-fire"></i> <span id="combo-count">0</span> コンボ!
+                    </span>
+                </div>
+                <div class="text-sm font-bold text-gray-600">
+                    スコア: <span id="current-score" class="text-emerald-600 font-black text-lg">0</span>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-5 overflow-hidden">
+                <div id="progress-bar" class="bg-emerald-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+
+            <!-- Question Text -->
+            <div class="mb-5">
+                <span id="question-category" class="text-xs font-bold text-emerald-600 tracking-wider uppercase">琉球処分</span>
+                <h3 id="question-text" class="text-base md:text-lg font-bold text-gray-800 mt-1 leading-snug">
+                    問題文がここに入ります。
+                </h3>
+            </div>
+
+            <!-- Options -->
+            <div id="options-container" class="space-y-2.5 mb-5">
+                <!-- Option buttons generated by JS -->
+            </div>
+
+            <!-- Feedback Area (Explanation) -->
+            <div id="explanation-card" class="hidden bg-slate-800 text-white rounded-2xl p-4 mb-4 border border-slate-700 animate-fade-in">
+                <div class="flex items-center gap-2 mb-1">
+                    <span id="result-icon" class="text-xl"></span>
+                    <h4 id="result-text" class="font-extrabold text-sm md:text-base">正解！</h4>
+                </div>
+                <p id="explanation-text" class="text-xs md:text-sm text-slate-300 leading-relaxed">
+                    解説文がここに入ります。
+                </p>
+            </div>
+
+            <!-- Next Button -->
+            <button id="next-btn" onclick="nextQuestion()" class="hidden w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-6 rounded-xl shadow transition-all flex items-center justify-center gap-2">
+                次へ進む <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- RESULT SCREEN -->
+        <div id="result-screen" class="glass-card rounded-3xl p-6 md:p-8 shadow-2xl w-full text-center hidden transition-all duration-300">
+            <div id="result-badge" class="inline-block p-4 rounded-full bg-amber-100 text-amber-500 text-4xl mb-3 shadow-inner">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            <h2 class="text-2xl font-black text-gray-800 mb-1">テスト結果</h2>
+            <p id="result-rank" class="text-xs md:text-sm font-bold text-emerald-600 mb-4">ランク判定中...</p>
+
+            <div class="bg-emerald-50/80 rounded-2xl p-5 mb-5">
+                <div class="text-xs text-emerald-600 font-bold uppercase tracking-wider mb-1">最終スコア</div>
+                <div class="text-4xl md:text-5xl font-black text-emerald-900 mb-1">
+                    <span id="final-score">0</span> <span class="text-base font-normal text-emerald-700">/ 100 点</span>
+                </div>
+                <p id="correct-count-text" class="text-xs text-emerald-800">16问中 0問 正解</p>
+            </div>
+
+            <div id="result-comment" class="bg-white p-4 rounded-xl border border-gray-200 text-xs md:text-sm text-gray-700 mb-5 text-left leading-relaxed">
+                コメント
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-2.5">
+                <button onclick="startQuiz()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-4 rounded-xl shadow transition-all flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-rotate-right"></i> もう一度挑戦
+                </button>
+                <button onclick="toggleMnemonicsModal()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-white font-bold py-3 px-4 rounded-xl shadow transition-all flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-lightbulb"></i> 外交暗記ポイントを見る
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Mnemonics Modal (暗記ポイント) -->
+    <div id="mnemonics-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl relative max-h-[85vh] overflow-y-auto">
+            <button onclick="toggleMnemonicsModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="text-lg font-black text-gray-800 mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-key text-amber-500"></i> 明治初期外交の重要ポイント
+            </h3>
+            <p class="text-xs text-gray-500 mb-4">テストによく出る対外条約＆事件の要点整理！</p>
+
+            <div class="space-y-2 text-xs text-gray-700">
+                <div class="p-2.5 bg-emerald-50 rounded-xl border border-emerald-200">
+                    <span class="font-bold text-emerald-800">琉球処分：</span>1872年 琉球藩（尚泰） → 1879年 沖縄県設置
+                </div>
+                <div class="p-2.5 bg-emerald-50 rounded-xl border border-emerald-200">
+                    <span class="font-bold text-emerald-800">樺太・千島交換条約（1875）：</span>榎本武揚が交渉。樺太＝ロシア領 / 千島列島＝日本領
+                </div>
+                <div class="p-2.5 bg-emerald-50 rounded-xl border border-emerald-200">
+                    <span class="font-bold text-emerald-800">明治六年の政変（1873）：</span>征韓論（西郷隆盛・板垣退助ら留守組） vs 外交優先（大久保利通・岩倉具視ら洋行組）。西郷らが下野。
+                </div>
+                <div class="p-2.5 bg-emerald-50 rounded-xl border border-emerald-200">
+                    <span class="font-bold text-emerald-800">日清修好条規（1871）：</span>伊達宗城＆李鴻章。対等条約（相互に領事裁判権を認める）。
+                </div>
+                <div class="p-2.5 bg-emerald-50 rounded-xl border border-emerald-200">
+                    <span class="font-bold text-emerald-800">日朝修好条規（1876）：</span>江華島事件（1875）契機。黒田清隆＆井上馨。不平等条約（日本の領事裁判権・無関税・3港開港・朝鮮は「自主の邦」）。
+                </div>
+                <div class="p-2.5 bg-emerald-50 rounded-xl border border-emerald-200">
+                    <span class="font-bold text-emerald-800">台湾出兵（1874）：</span>琉球漂流民殺害事件契機。西郷従道指揮。清から賠償金。
+                </div>
+            </div>
+
+            <button onclick="toggleMnemonicsModal()" class="w-full mt-5 bg-slate-800 text-white font-bold py-2.5 rounded-xl text-sm">
+                閉じる
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center text-xs text-emerald-200 py-3">
+        日本史探究 授業サポートアプリ | 明治初期の外交編
+    </footer>
+
+    <!-- JavaScript Quiz Logic & Web Audio API -->
+    <script>
+        // ==========================================
+        // Sound System (Web Audio API Synthesizer)
+        // ==========================================
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+
+            playCorrect() {
+                this.init();
+                const now = this.ctx.currentTime;
+                
+                const osc1 = this.ctx.createOscillator();
+                const osc2 = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc1.type = 'sine';
+                osc2.type = 'triangle';
+
+                // E5 (659.25Hz) -> A5 (880Hz)
+                osc1.frequency.setValueAtTime(659.25, now); 
+                osc1.frequency.setValueAtTime(880, now + 0.1); 
+
+                osc2.frequency.setValueAtTime(659.25, now);
+                osc2.frequency.setValueAtTime(880, now + 0.1);
+
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+
+                osc1.connect(gain);
+                osc2.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                osc1.start(now);
+                osc2.start(now);
+                osc1.stop(now + 0.4);
+                osc2.stop(now + 0.4);
+            }
+
+            playWrong() {
+                this.init();
+                const now = this.ctx.currentTime;
+
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.setValueAtTime(120, now + 0.15);
+
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.4);
+            }
+
+            playFinish() {
+                this.init();
+                const now = this.ctx.currentTime;
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+
+                notes.forEach((freq, index) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + index * 0.12);
+
+                    gain.gain.setValueAtTime(0.2, now + index * 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + index * 0.12 + 0.5);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    osc.start(now + index * 0.12);
+                    osc.stop(now + index * 0.12 + 0.5);
+                });
+            }
+        }
+
+        const sound = new SoundFX();
+
+        // ==========================================
+        // Quiz Data (16 Questions - Balanced Answers 1-4: 4 of each)
+        // Correct answers distribution:
+        // Option 0 (1番) -> 4件 [Q1, Q5, Q9, Q13]
+        // Option 1 (2番) -> 4件 [Q2, Q6, Q10, Q14]
+        // Option 2 (3番) -> 4件 [Q3, Q7, Q11, Q15]
+        // Option 3 (4番) -> 4件 [Q4, Q8, Q12, Q16]
+        // ==========================================
+        const quizData = [
+            // Q1: 正解 = 1番 (index 0)
+            {
+                category: "1. 琉球処分 (No.47)",
+                question: "1872年、明治政府が琉球を日本の領土に編入する第一段階として設置し、尚泰を藩王とした組織は何か？",
+                options: [
+                    "琉球藩",
+                    "沖縄県",
+                    "琉球都庁",
+                    "鹿児島県"
+                ],
+                answer: 0,
+                explanation: "1872年に「琉球藩」を設置して尚泰を藩王とし、その後1879年に「沖縄県」を設置（琉球処分）しました。"
+            },
+            // Q2: 正解 = 2番 (index 1)
+            {
+                category: "2. 琉球処分 (No.47)",
+                question: "1872年に琉球藩の藩王となり、その後の琉球処分により最後の琉球国王となった人物は誰か？",
+                options: [
+                    "尚円",
+                    "尚泰",
+                    "尚真",
+                    "尚巴志"
+                ],
+                answer: 1,
+                explanation: "琉球藩王に命じられたのは「尚泰（しょうたい）」です。1879年の沖縄県設置に伴い琉球王国は滅亡しました。"
+            },
+            // Q3: 正解 = 3番 (index 2)
+            {
+                category: "3. 北海道とアイヌ (No.47)",
+                question: "1882年に開拓使が廃止された後、北海道に一時的に置かれた3つの県（函館・根室）と、あと1つの組み合わせはどれか？",
+                options: [
+                    "旭川県",
+                    "網走県",
+                    "札幌県",
+                    "室蘭県"
+                ],
+                answer: 2,
+                explanation: "開拓使廃止後、北海道には「函館県・根室県・札幌県」の3県が置かれました（1886年に北海道庁に統合）。"
+            },
+            // Q4: 正解 = 4番 (index 3)
+            {
+                category: "4. 北方の国境確定 (No.47)",
+                question: "1875年、全権大使榎本武揚がロシアと締結し、樺太全島をロシア領、千島列島全島を日本領と定めた条約は何か？",
+                options: [
+                    "日露和親条約",
+                    "日露修好通商条約",
+                    "ポーツマス条約",
+                    "樺太・千島交換条約"
+                ],
+                answer: 3,
+                explanation: "1875年、特命全権大使・榎本武揚によって「樺太・千島交換条約」が締結され、北方の国境が確定しました。"
+            },
+            // Q5: 正解 = 1番 (index 0)
+            {
+                category: "5. 征韓論と政治 (No.47)",
+                question: "明治初期、武力をもって朝鮮を開国させようと唱えた西郷隆盛らの主張を何というか？",
+                options: [
+                    "征韓論",
+                    "尊王攘夷論",
+                    "脱亜入欧論",
+                    "公武合体論"
+                ],
+                answer: 0,
+                explanation: "国交を拒否する朝鮮に対し、武力で開国を迫ろうとする主張を「征韓論」と呼びます。"
+            },
+            // Q6: 正解 = 2番 (index 1)
+            {
+                category: "6. 明治六年の政変 (No.47)",
+                question: "1873年、欧米視察から帰国し内政優先を主張して西郷隆盛らの征韓論に反対した洋行派の中心人物は誰か？",
+                options: [
+                    "板垣退助",
+                    "大久保利通",
+                    "江藤新平",
+                    "後藤象二郎"
+                ],
+                answer: 1,
+                explanation: "岩倉遣外使節団から帰国した「大久保利通」や木戸孝允らは内政の充実（富国強兵）を優先すべきとして西郷に反対しました。"
+            },
+            // Q7: 正解 = 3番 (index 2)
+            {
+                category: "7. 明治六年の政変 (No.47)",
+                question: "1873年の「明治六年の政変」で、西郷隆盛や板垣退助とともに征韓論を主張して敗れ、政府を去った（下野した）肥前出身の人物は誰か？",
+                options: [
+                    "伊藤博文",
+                    "黒田清隆",
+                    "江藤新平",
+                    "山県有朋"
+                ],
+                answer: 2,
+                explanation: "征韓論を唱えた留守組の西郷隆盛、板垣退助、後藤象二郎、江藤新平、副島種臣らが一斉に下野しました。"
+            },
+            // Q8: 正解 = 4番 (index 3)
+            {
+                category: "8. 朝鮮外交の発端 (No.47)",
+                question: "1875年、日本軍艦雲揚号が朝鮮沿岸を測量中、現地の砲台と交戦した出来事を何というか？",
+                options: [
+                    "壬午軍乱",
+                    "甲申事変",
+                    "三浦の乱",
+                    "江華島事件"
+                ],
+                answer: 4,
+                explanation: "1875年の「江華島（こうかとう）事件」を口実に、日本は朝鮮に対して開国を迫りました。"
+            },
+            // Q9: 正解 = 1番 (index 0)
+            {
+                category: "9. 日朝修好条規 (No.47)",
+                question: "1876年に日朝修好条規が締結された際、日本側の全権として交渉にあたった開拓長官は誰か？",
+                options: [
+                    "黒田清隆",
+                    "陸奥宗光",
+                    "小村寿太郎",
+                    "勝海舟"
+                ],
+                answer: 0,
+                explanation: "日朝修好条規は日本側全権の「黒田清隆」・井上馨らが朝鮮側と交渉して締結されました。"
+            },
+            // Q10: 正解 = 2番 (index 1)
+            {
+                category: "10. 日朝修好条規の内容 (No.47)",
+                question: "1876年の日朝修好条規第1款で「朝鮮国ハ自主ノ邦ニシテ、日本国ト平等ノ権ヲ保有セリ」と明記された主な狙いは何か？",
+                options: [
+                    "朝鮮をロシアの保護国化するため",
+                    "清の宗主権を否定し、清の干渉を排除するため",
+                    "アメリカの介入を防ぐため",
+                    "琉球王国の権利を守るため"
+                ],
+                answer: 1,
+                explanation: "朝鮮を「自主の邦」と規定することで、それまで朝鮮に対して宗主権を持っていた「清の干渉を排除する」狙いがありました。"
+            },
+            // Q11: 正解 = 3番 (index 2)
+            {
+                category: "11. 日朝修好条規の不平等性 (No.47)",
+                question: "日朝修好条規において、日本側が得た一方的な特権の組み合わせとして正しいものはどれか？",
+                options: [
+                    "関税自主権と最恵国待遇",
+                    "駐兵権と鉄道敷設権",
+                    "領事裁判権（治外法権）と無関税",
+                    "租借地と鉱山採掘権"
+                ],
+                answer: 2,
+                explanation: "日本は朝鮮に対して「領事裁判権（治外法権）」を認めさせ、関税を取り決めない「無関税」という不平等な内容を押し付けました。"
+            },
+            // Q12: 正解 = 4番 (index 3)
+            {
+                category: "12. 日朝修好条規の開港場 (No.47)",
+                question: "日朝修好条規によって開港された3つの港（釜山・仁川と、もう1つ）はどこか？",
+                options: [
+                    "平壌",
+                    "漢城",
+                    "済州島",
+                    "元山"
+                ],
+                answer: 3,
+                explanation: "日朝修好条規により、「釜山（ぷさん）・仁川（いんちょん）・元山（げんざん）」の3港が開港されました。"
+            },
+            // Q13: 正解 = 1番 (index 0)
+            {
+                category: "13. 日清修好条規 (No.47)",
+                question: "1871年に伊達宗城と李鴻章の間で締結された「日清修好条規」の特徴として正しいものはどれか？",
+                options: [
+                    "両国が相互に領事裁判権を認める対等な条約であった",
+                    "日本が清に対して一方的に領事裁判権を獲得した不平等条約であった",
+                    "清が日本に対して関税自主権を放棄させた不平等条約であった",
+                    "イギリスが介在した三國間条約であった"
+                ],
+                answer: 0,
+                explanation: "日清修好条規（1871）は、日本が外国と結んだ近代最初で唯一の「対等条約」であり、相互に領事裁判権を認め合いました。"
+            },
+            // Q14: 正解 = 2番 (index 1)
+            {
+                category: "14. 台湾出兵の発端 (No.47)",
+                question: "1874年の台湾出兵のきっかけとなった、1871年に発生した事件は何か？",
+                options: [
+                    "江華島事件",
+                    "琉球漂流民殺害事件",
+                    "天津事件",
+                    "中村大尉殺害事件"
+                ],
+                answer: 1,
+                explanation: "1871年、台湾に漂着した琉球（宮古島）の住民が先住民に殺害された「琉球漂流民殺害事件」が台湾出兵の口実となりました。"
+            },
+            // Q15: 正解 = 3番 (index 2)
+            {
+                category: "15. 台湾出兵の指揮官 (No.47)",
+                question: "1874年、近代日本で最初の海外派兵となった台湾出兵を陸軍中将として指揮した人物は誰か？",
+                options: [
+                    "西郷隆盛",
+                    "山県有朋",
+                    "西郷従道",
+                    "大山厳"
+                ],
+                answer: 2,
+                explanation: "台湾出兵を指揮したのは西郷隆盛の弟である「西郷従道（つぐみち）」です。"
+            },
+            // Q16: 正解 = 4番 (index 3)
+            {
+                category: "16. 台湾出兵の外交的成果 (No.47)",
+                question: "1874年の台湾出兵の後、イギリス公使ウェードの仲介で日清間に交わされた「日清互換条款」の結果はどうなったか？",
+                options: [
+                    "清が台湾を日本に割譲した",
+                    "日本が清に賠償金を支払った",
+                    "清が朝鮮の独立を正式承認した",
+                    "清が日本の行動を正当と認め、見舞金・賠償金を支払った"
+                ],
+                answer: 3,
+                explanation: "清は日本の出兵を正当な行動と認め、50万両（両は銀の単位）の賠償金（見舞金等）を支払いました。これにより琉球民は「日本国民」とみなされ、琉球処分が進む要因となりました。"
+            }
+        ];
+
+        // ==========================================
+        // App State Variables
+        // ==========================================
+        let currentIdx = 0;
+        let score = 0;
+        let combo = 0;
+        let correctNum = 0;
+        let isAnswered = false;
+
+        // ==========================================
+        // DOM Elements
+        // ==========================================
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+
+        const questionNumber = document.getElementById('question-number');
+        const comboBadge = document.getElementById('combo-badge');
+        const comboCount = document.getElementById('combo-count');
+        const currentScoreEl = document.getElementById('current-score');
+        const progressBar = document.getElementById('progress-bar');
+        const questionCategory = document.getElementById('question-category');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+
+        const explanationCard = document.getElementById('explanation-card');
+        const resultIcon = document.getElementById('result-icon');
+        const resultText = document.getElementById('result-text');
+        const explanationText = document.getElementById('explanation-text');
+        const nextBtn = document.getElementById('next-btn');
+
+        // ==========================================
+        // Functions
+        // ==========================================
+        function startQuiz() {
+            currentIdx = 0;
+            score = 0;
+            combo = 0;
+            correctNum = 0;
+            isAnswered = false;
+
+            startScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            isAnswered = false;
+            const q = quizData[currentIdx];
+
+            // Header UI update
+            questionNumber.textContent = `Q.${currentIdx + 1} / ${quizData.length}`;
+            currentScoreEl.textContent = score;
+            progressBar.style.width = `${((currentIdx) / quizData.length) * 100}%`;
+
+            if (combo > 1) {
+                comboBadge.classList.remove('hidden');
+                comboCount.textContent = combo;
+            } else {
+                comboBadge.classList.add('hidden');
+            }
+
+            // Question Content
+            questionCategory.textContent = q.category;
+            questionText.textContent = q.question;
+
+            // Reset Options & Explanation
+            optionsContainer.innerHTML = '';
+            explanationCard.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+
+            // Render Options
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-3.5 md:p-4 rounded-2xl font-bold text-xs md:text-sm transition-all duration-200 border-2 border-gray-200 bg-white hover:border-emerald-400 hover:bg-emerald-50/50 flex justify-between items-center group shadow-sm`;
+                btn.innerHTML = `
+                    <span class="flex items-center gap-2">
+                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gray-100 text-gray-700 text-xs font-black group-hover:bg-emerald-600 group-hover:text-white shrink-0">${idx + 1}</span>
+                        <span>${opt}</span>
+                    </span>
+                    <i class="fa-regular fa-circle text-gray-300 group-hover:text-emerald-400 shrink-0 ml-2"></i>
+                `;
+                btn.onclick = () => checkAnswer(idx, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIdx, selectedBtn) {
+            if (isAnswered) return;
+            isAnswered = true;
+
+            const q = quizData[currentIdx];
+            const buttons = optionsContainer.querySelectorAll('button');
+
+            // Disable all buttons
+            buttons.forEach(btn => btn.disabled = true);
+
+            if (selectedIdx === q.answer) {
+                // Correct
+                sound.playCorrect();
+                correctNum++;
+                combo++;
+                const gainedScore = 10 + (combo > 1 ? combo * 2 : 0);
+                score += gainedScore;
+
+                selectedBtn.className = "w-full text-left p-3.5 md:p-4 rounded-2xl font-bold text-xs md:text-sm border-2 border-emerald-500 bg-emerald-50 text-emerald-950 flex justify-between items-center shadow";
+                selectedBtn.querySelector('i').className = "fa-solid fa-circle-check text-emerald-600 text-xl shrink-0 ml-2";
+
+                resultIcon.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i>`;
+                resultText.textContent = `正解！ (+${gainedScore}pt)`;
+                resultText.className = "font-extrabold text-sm md:text-base text-emerald-400";
+            } else {
+                // Wrong
+                sound.playWrong();
+                combo = 0;
+
+                selectedBtn.className = "w-full text-left p-3.5 md:p-4 rounded-2xl font-bold text-xs md:text-sm border-2 border-rose-500 bg-rose-50 text-rose-950 flex justify-between items-center shadow";
+                selectedBtn.querySelector('i').className = "fa-solid fa-circle-xmark text-rose-600 text-xl shrink-0 ml-2";
+
+                // Highlight correct answer
+                const correctBtn = buttons[q.answer];
+                correctBtn.className = "w-full text-left p-3.5 md:p-4 rounded-2xl font-bold text-xs md:text-sm border-2 border-emerald-500 bg-emerald-50 text-emerald-950 flex justify-between items-center shadow";
+                correctBtn.querySelector('i').className = "fa-solid fa-circle-check text-emerald-600 text-xl shrink-0 ml-2";
+
+                resultIcon.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-400"></i>`;
+                resultText.textContent = "不正解...";
+                resultText.className = "font-extrabold text-sm md:text-base text-rose-400";
+            }
+
+            // Show explanation
+            explanationText.textContent = q.explanation;
+            explanationCard.classList.remove('hidden');
+            nextBtn.classList.remove('hidden');
+
+            // Update score
+            currentScoreEl.textContent = score;
+        }
+
+        function nextQuestion() {
+            currentIdx++;
+            if (currentIdx < quizData.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+
+            sound.playFinish();
+
+            const finalScoreEl = document.getElementById('final-score');
+            const correctCountText = document.getElementById('correct-count-text');
+            const resultRank = document.getElementById('result-rank');
+            const resultComment = document.getElementById('result-comment');
+            const resultBadge = document.getElementById('result-badge');
+
+            // Convert score out of 100
+            const calculatedScore = Math.min(100, Math.round((correctNum / quizData.length) * 100));
+            finalScoreEl.textContent = calculatedScore;
+            correctCountText.textContent = `${quizData.length}問中 ${correctNum}問 正解`;
+
+            // Rank Judgment
+            if (calculatedScore === 100) {
+                resultRank.textContent = "🏆 ランク：明治外交マスター（SS級）";
+                resultBadge.className = "inline-block p-4 rounded-full bg-amber-100 text-amber-500 text-5xl mb-3 shadow-inner";
+                resultComment.innerHTML = `<strong>完璧な成績です！</strong><br>琉球処分・樺太千島交換条約・日朝修好条規・日清修好条規の条約内容や重要人物まで完璧に理解しています！テスト本番も満点間違いなし！`;
+            } else if (calculatedScore >= 80) {
+                resultRank.textContent = "🥇 ランク：外交エキスパート（A級）";
+                resultBadge.className = "inline-block p-4 rounded-full bg-emerald-100 text-emerald-600 text-5xl mb-3 shadow-inner";
+                resultComment.innerHTML = `<strong>素晴らしい高得点です！</strong><br>明治初期の複雑な国際関係をとてもよく理解できています。間違えた問題の解説（日朝修好条規と日清修好条規の相違点など）を復習しておこう！`;
+            } else if (calculatedScore >= 50) {
+                resultRank.textContent = "🥈 ランク：見習い外交官（B級）";
+                resultBadge.className = "inline-block p-4 rounded-full bg-slate-100 text-slate-600 text-5xl mb-3 shadow-inner";
+                resultComment.innerHTML = `<strong>基本知識は備わっています！</strong><br>明治六年の政変（留守組 vs 洋行組）や江華島事件の経緯などを、もう一度授業プリントNo.47で確認してみよう！`;
+            } else {
+                resultRank.textContent = "🥉 ランク：復習が必要！（C級）";
+                resultBadge.className = "inline-block p-4 rounded-full bg-rose-100 text-rose-500 text-5xl mb-3 shadow-inner";
+                resultComment.innerHTML = `<strong>伸びしろ満点です！</strong><br>まずは授業プリントNo.47の図や年表を見直して、重要用語（琉球藩、樺太・千島交換条約、日朝修好条規）を復習してから再挑戦しよう！`;
+            }
+        }
+
+        function toggleMnemonicsModal() {
+            const modal = document.getElementById('mnemonics-modal');
+            modal.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
